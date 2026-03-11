@@ -1,0 +1,53 @@
+{
+  "version": "0.1.0",
+  "wit_version": "0.3.0",
+  "type": "channel",
+  "name": "wechat-work",
+  "description": "企业微信自建应用 Channel for IronClaw",
+  "setup": {
+    "required_secrets": [
+      {
+        "name": "wechat_work_secret",
+        "prompt": "请输入企业微信自建应用的 Secret（在应用详情页可找到）",
+        "optional": false
+      }
+    ],
+    "setup_url": "https://work.weixin.qq.com/wework_admin/frame"
+  },
+  "capabilities": {
+    "http": {
+      "allowlist": [
+        { "host": "qyapi.weixin.qq.com", "path_prefix": "/cgi-bin/" }
+      ],
+      "credentials": {
+        "wechat_work": {
+          "secret_name": "wechat_work_secret",
+          "location": { "type": "query_param", "name": "corpsecret" },
+          "host_patterns": ["qyapi.weixin.qq.com"]
+        }
+      },
+      "rate_limit": {
+        "requests_per_minute": 30,
+        "requests_per_hour": 500
+      }
+    },
+    "secrets": {
+      "allowed_names": ["wechat_work_*"]
+    },
+    "channel": {
+      "allowed_paths": ["/webhook/wechat-work"],
+      "allow_polling": false,
+      "workspace_prefix": "channels/wechat-work/",
+      "emit_rate_limit": {
+        "messages_per_minute": 60,
+        "messages_per_hour": 1000
+      }
+    }
+  },
+  "config": {
+    "corp_id": "在此填入你的企业ID",
+    "agent_id": 1000001,
+    "wx_token": "在此填入企业微信后台设置的Token",
+    "allow_from": ["填入允许的企业微信userid", "可填多个"]
+  }
+}
